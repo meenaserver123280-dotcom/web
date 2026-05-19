@@ -1,0 +1,13 @@
+{
+  "name": "verify-api",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.9",
+    "request-ip": "^3.3.0",
+    "mongoose": "^7.0.0"
+  }
+}
