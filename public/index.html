@@ -9,18 +9,17 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0f0c29;
-  --bg2:#1a1042;
+  --bg:#080b14;
   --card:rgba(255,255,255,0.04);
-  --border:rgba(255,255,255,0.08);
-  --accent:#a78bfa;
-  --accent2:#818cf8;
-  --accent3:#38bdf8;
-  --success:#34d399;
-  --danger:#f87171;
-  --warn:#fbbf24;
-  --text:#f1f5f9;
-  --muted:#94a3b8;
+  --border:rgba(255,255,255,0.07);
+  --accent:#00c6ff;
+  --accent2:#0072ff;
+  --accent3:#7b2ff7;
+  --success:#00e5a0;
+  --danger:#ff4d6d;
+  --warn:#ffbe0b;
+  --text:#f0f4ff;
+  --muted:#8895b3;
   --font:'Inter',sans-serif;
   --font2:'Poppins',sans-serif;
 }
@@ -33,41 +32,42 @@ html,body{
 }
 .bg-wrap{
   position:fixed;inset:0;z-index:0;
-  background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);
+  background:linear-gradient(135deg,#080b14 0%,#0d1829 50%,#0a0f1e 100%);
   overflow:hidden;
 }
 .bg-wrap::before{
   content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 80% 50% at 20% 20%,rgba(167,139,250,0.15) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%,rgba(56,189,248,0.12) 0%,transparent 60%);
-  animation:bgShift 8s ease-in-out infinite alternate;
+    radial-gradient(ellipse 70% 50% at 15% 20%,rgba(0,198,255,0.1) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 45% at 85% 80%,rgba(123,47,247,0.12) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(0,114,255,0.06) 0%,transparent 70%);
+  animation:bgShift 10s ease-in-out infinite alternate;
 }
 @keyframes bgShift{
   0%{opacity:1;transform:scale(1)}
-  100%{opacity:.7;transform:scale(1.05)}
+  100%{opacity:.8;transform:scale(1.04)}
 }
 .orb{
   position:fixed;border-radius:50%;
-  filter:blur(60px);pointer-events:none;
+  filter:blur(70px);pointer-events:none;
   animation:orbFloat linear infinite;
 }
-.orb1{width:300px;height:300px;background:rgba(167,139,250,0.12);top:-80px;left:-80px;animation-duration:20s}
-.orb2{width:250px;height:250px;background:rgba(56,189,248,0.1);bottom:-60px;right:-60px;animation-duration:25s;animation-direction:reverse}
-.orb3{width:150px;height:150px;background:rgba(129,140,248,0.15);top:50%;left:50%;animation-duration:15s}
+.orb1{width:280px;height:280px;background:rgba(0,198,255,0.08);top:-60px;left:-60px;animation-duration:22s}
+.orb2{width:240px;height:240px;background:rgba(123,47,247,0.09);bottom:-50px;right:-50px;animation-duration:28s;animation-direction:reverse}
+.orb3{width:180px;height:180px;background:rgba(0,114,255,0.07);top:40%;left:40%;animation-duration:18s}
 @keyframes orbFloat{
   0%{transform:translate(0,0) rotate(0deg)}
-  25%{transform:translate(30px,-20px) rotate(90deg)}
-  50%{transform:translate(-20px,30px) rotate(180deg)}
-  75%{transform:translate(20px,20px) rotate(270deg)}
+  25%{transform:translate(25px,-18px) rotate(90deg)}
+  50%{transform:translate(-18px,25px) rotate(180deg)}
+  75%{transform:translate(18px,18px) rotate(270deg)}
   100%{transform:translate(0,0) rotate(360deg)}
 }
 .grid{
   position:fixed;inset:0;z-index:0;
   background-image:
-    linear-gradient(rgba(167,139,250,0.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(167,139,250,0.03) 1px,transparent 1px);
-  background-size:50px 50px;
+    linear-gradient(rgba(0,198,255,0.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,198,255,0.025) 1px,transparent 1px);
+  background-size:55px 55px;
 }
 .wrap{
   position:relative;z-index:2;
@@ -79,11 +79,11 @@ html,body{
 .card{
   width:100%;max-width:380px;
   background:var(--card);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
   border:1px solid var(--border);
-  border-radius:24px;
-  padding:32px 28px 28px;
+  border-radius:26px;
+  padding:32px 26px 26px;
   position:relative;
   animation:cardIn .7s cubic-bezier(.16,1,.3,1) forwards;
   opacity:0;transform:translateY(30px) scale(.97);
@@ -91,28 +91,28 @@ html,body{
 @keyframes cardIn{to{opacity:1;transform:translateY(0) scale(1)}}
 .card::before{
   content:'';position:absolute;
-  top:0;left:10%;right:10%;height:1px;
+  top:0;left:12%;right:12%;height:1px;
   background:linear-gradient(90deg,transparent,var(--accent),var(--accent3),transparent);
   border-radius:1px;
   animation:shimmerLine 3s ease-in-out infinite;
 }
 @keyframes shimmerLine{
-  0%,100%{opacity:.5;left:10%;right:10%}
-  50%{opacity:1;left:5%;right:5%}
+  0%,100%{opacity:.4;left:12%;right:12%}
+  50%{opacity:1;left:6%;right:6%}
 }
 .logo-area{
   display:flex;flex-direction:column;
   align-items:center;
-  margin-bottom:28px;
+  margin-bottom:26px;
   text-align:center;
 }
 .logo-ring{
-  width:72px;height:72px;
+  width:70px;height:70px;
   border-radius:50%;
-  background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(56,189,248,0.2));
-  border:1.5px solid rgba(167,139,250,0.3);
+  background:linear-gradient(135deg,rgba(0,198,255,0.15),rgba(123,47,247,0.15));
+  border:1.5px solid rgba(0,198,255,0.25);
   display:flex;align-items:center;justify-content:center;
-  font-size:28px;
+  font-size:26px;
   margin-bottom:14px;
   position:relative;
   transition:all .4s;
@@ -120,30 +120,30 @@ html,body{
 .logo-ring::before{
   content:'';position:absolute;inset:-6px;
   border-radius:50%;
-  border:1px solid rgba(167,139,250,0.15);
+  border:1px solid rgba(0,198,255,0.12);
   animation:ringPulse 2s ease-in-out infinite;
 }
 .logo-ring::after{
-  content:'';position:absolute;inset:-12px;
+  content:'';position:absolute;inset:-13px;
   border-radius:50%;
-  border:1px solid rgba(167,139,250,0.07);
+  border:1px solid rgba(0,198,255,0.05);
   animation:ringPulse 2s ease-in-out infinite .4s;
 }
 @keyframes ringPulse{
   0%,100%{transform:scale(1);opacity:1}
-  50%{transform:scale(1.08);opacity:.5}
+  50%{transform:scale(1.08);opacity:.4}
 }
 .logo-ring.success-ring{
-  background:linear-gradient(135deg,rgba(52,211,153,0.2),rgba(52,211,153,0.1));
-  border-color:rgba(52,211,153,0.4);
+  background:linear-gradient(135deg,rgba(0,229,160,0.2),rgba(0,229,160,0.08));
+  border-color:rgba(0,229,160,0.4);
 }
 .logo-ring.fail-ring{
-  background:linear-gradient(135deg,rgba(248,113,113,0.2),rgba(248,113,113,0.1));
-  border-color:rgba(248,113,113,0.4);
+  background:linear-gradient(135deg,rgba(255,77,109,0.2),rgba(255,77,109,0.08));
+  border-color:rgba(255,77,109,0.4);
 }
 .logo-ring.warn-ring{
-  background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(251,191,36,0.1));
-  border-color:rgba(251,191,36,0.4);
+  background:linear-gradient(135deg,rgba(255,190,11,0.2),rgba(255,190,11,0.08));
+  border-color:rgba(255,190,11,0.4);
 }
 .logo-title{
   font-family:var(--font2);
@@ -155,12 +155,12 @@ html,body{
 }
 .logo-sub{
   font-size:12px;color:var(--muted);
-  letter-spacing:.5px;
+  letter-spacing:.4px;
 }
-.steps{margin-bottom:20px}
+.steps{margin-bottom:18px}
 .step{
   display:flex;align-items:center;
-  gap:12px;padding:10px 14px;
+  gap:12px;padding:9px 13px;
   border-radius:12px;
   margin-bottom:6px;
   border:1px solid transparent;
@@ -168,46 +168,46 @@ html,body{
   background:transparent;
 }
 .step.active{
-  background:rgba(167,139,250,0.06);
-  border-color:rgba(167,139,250,0.15);
+  background:rgba(0,198,255,0.05);
+  border-color:rgba(0,198,255,0.15);
 }
 .step.done{
-  background:rgba(52,211,153,0.05);
-  border-color:rgba(52,211,153,0.12);
+  background:rgba(0,229,160,0.04);
+  border-color:rgba(0,229,160,0.12);
 }
 .step.error{
-  background:rgba(248,113,113,0.05);
-  border-color:rgba(248,113,113,0.12);
+  background:rgba(255,77,109,0.04);
+  border-color:rgba(255,77,109,0.12);
 }
 .step-icon{
-  width:32px;height:32px;flex-shrink:0;
+  width:30px;height:30px;flex-shrink:0;
   border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:600;
-  border:1.5px solid rgba(255,255,255,0.08);
-  background:rgba(255,255,255,0.04);
+  font-size:12px;font-weight:600;
+  border:1.5px solid rgba(255,255,255,0.07);
+  background:rgba(255,255,255,0.03);
   color:var(--muted);
   transition:all .3s;
 }
 .step.active .step-icon{
   border-color:var(--accent);
-  background:rgba(167,139,250,0.12);
+  background:rgba(0,198,255,0.1);
   color:var(--accent);
-  box-shadow:0 0 12px rgba(167,139,250,0.2);
+  box-shadow:0 0 12px rgba(0,198,255,0.2);
   animation:iconPulse 1s ease-in-out infinite;
 }
 @keyframes iconPulse{
-  0%,100%{box-shadow:0 0 12px rgba(167,139,250,0.2)}
-  50%{box-shadow:0 0 20px rgba(167,139,250,0.4)}
+  0%,100%{box-shadow:0 0 12px rgba(0,198,255,0.2)}
+  50%{box-shadow:0 0 22px rgba(0,198,255,0.45)}
 }
 .step.done .step-icon{
   border-color:var(--success);
-  background:rgba(52,211,153,0.12);
+  background:rgba(0,229,160,0.1);
   color:var(--success);
 }
 .step.error .step-icon{
   border-color:var(--danger);
-  background:rgba(248,113,113,0.12);
+  background:rgba(255,77,109,0.1);
   color:var(--danger);
 }
 .step-text{flex:1}
@@ -224,12 +224,12 @@ html,body{
   transition:opacity .3s;
   font-family:monospace;
 }
-.step.active .step-desc,.step.done .step-desc,.step.error .step-desc{opacity:.6}
+.step.active .step-desc,.step.done .step-desc,.step.error .step-desc{opacity:.55}
 .prog-wrap{
   height:3px;
-  background:rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.05);
   border-radius:99px;
-  margin-bottom:16px;
+  margin-bottom:14px;
   overflow:hidden;
 }
 .prog-fill{
@@ -243,23 +243,23 @@ html,body{
 .prog-fill::after{
   content:'';position:absolute;
   top:0;left:-100%;width:100%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);
   animation:progShimmer 1.5s ease-in-out infinite;
 }
 @keyframes progShimmer{to{left:200%}}
 .status{
   display:flex;align-items:center;gap:10px;
-  padding:12px 14px;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.06);
+  padding:11px 14px;
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.05);
   border-radius:12px;
   font-size:13px;color:var(--muted);
   transition:all .3s;
-  min-height:46px;
+  min-height:44px;
 }
-.status.ok{border-color:rgba(52,211,153,0.2);background:rgba(52,211,153,0.04);color:var(--success)}
-.status.bad{border-color:rgba(248,113,113,0.2);background:rgba(248,113,113,0.04);color:var(--danger)}
-.status.war{border-color:rgba(251,191,36,0.2);background:rgba(251,191,36,0.04);color:var(--warn)}
+.status.ok{border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.04);color:var(--success)}
+.status.bad{border-color:rgba(255,77,109,0.2);background:rgba(255,77,109,0.04);color:var(--danger)}
+.status.war{border-color:rgba(255,190,11,0.2);background:rgba(255,190,11,0.04);color:var(--warn)}
 .s-dot{
   width:7px;height:7px;border-radius:50%;
   background:var(--muted);flex-shrink:0;
@@ -274,40 +274,66 @@ html,body{
   display:none;
   margin-top:14px;
   border-radius:16px;
-  padding:20px;
+  padding:18px;
   text-align:center;
   animation:cardIn .4s ease forwards;
 }
 .result.show{display:block}
-.r-emoji{font-size:36px;margin-bottom:10px;display:block}
+.r-emoji{font-size:34px;margin-bottom:8px;display:block}
 .r-title{
   font-family:var(--font2);
-  font-size:16px;font-weight:700;
-  margin-bottom:6px;
+  font-size:15px;font-weight:700;
+  margin-bottom:5px;
 }
 .r-desc{
   font-size:12px;line-height:1.7;
-  opacity:.75;font-family:monospace;
+  opacity:.7;font-family:monospace;
   white-space:pre-line;
 }
-.result.ok{background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);color:var(--success)}
-.result.bad{background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);color:var(--danger)}
-.result.war{background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.2);color:var(--warn)}
-.powered{
-  margin-top:20px;
-  text-align:center;
-  font-size:11px;
-  color:var(--muted);
-  opacity:.4;
-  letter-spacing:.5px;
-  display:flex;align-items:center;justify-content:center;gap:6px;
+.result.ok{background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.18);color:var(--success)}
+.result.bad{background:rgba(255,77,109,0.06);border:1px solid rgba(255,77,109,0.18);color:var(--danger)}
+.result.war{background:rgba(255,190,11,0.06);border:1px solid rgba(255,190,11,0.18);color:var(--warn)}
+
+/* CONTINUE BUTTON */
+.btn-continue{
+  display:none;
+  margin-top:14px;
+  width:100%;
+  padding:13px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-family:var(--font2);
+  font-size:14px;font-weight:700;
+  letter-spacing:.3px;
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s, box-shadow .2s;
 }
-.powered span{
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  font-weight:600;opacity:1;
+.btn-continue.show{display:block}
+.btn-continue.ok-btn{
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+  color:#fff;
+  box-shadow:0 4px 20px rgba(0,198,255,0.3);
 }
+.btn-continue.warn-btn{
+  background:linear-gradient(135deg,#ffbe0b,#fb8500);
+  color:#000;
+  box-shadow:0 4px 20px rgba(255,190,11,0.3);
+}
+.btn-continue.bad-btn{
+  background:linear-gradient(135deg,#ff4d6d,#c9184a);
+  color:#fff;
+  box-shadow:0 4px 20px rgba(255,77,109,0.3);
+}
+.btn-continue::before{
+  content:'';position:absolute;
+  top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  animation:btnShimmer 2s ease-in-out infinite;
+}
+@keyframes btnShimmer{to{left:200%}}
+.btn-continue:active{transform:scale(.97)}
 </style>
 </head>
 <body>
@@ -322,7 +348,7 @@ html,body{
   <div class="card">
 
     <div class="logo-area">
-      <div class="logo-ring" id="logoRing">🛡️</div>
+      <div class="logo-ring" id="logoRing">🔐</div>
       <div class="logo-title" id="mainTitle">Secure Verification</div>
       <div class="logo-sub">Checking your identity...</div>
     </div>
@@ -373,9 +399,9 @@ html,body{
       <div class="r-desc" id="rDesc"></div>
     </div>
 
-    <div class="powered">
-      Powered by <span>Ravi X Nexo Wallet</span>
-    </div>
+    <button class="btn-continue" id="btnContinue" onclick="continueTgBot()">
+      Continue to Bot →
+    </button>
 
   </div>
 </div>
@@ -415,6 +441,20 @@ function showResult(type, emoji, title, desc) {
   document.getElementById('rDesc').textContent  = desc;
   b.className = 'result show ' + type;
   setLogo(emoji, type + '-ring');
+}
+
+function showContinueBtn(type) {
+  const btn = document.getElementById('btnContinue');
+  btn.className = 'btn-continue show ' + type + '-btn';
+}
+
+function continueTgBot() {
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
+    tg.close();
+  } else {
+    window.close();
+  }
 }
 
 function getCanvasHash() {
@@ -483,7 +523,7 @@ async function run() {
 
   await sleep(500);
 
-  // STEP 1: Telegram ID
+  // STEP 1
   setStep('s1', 'active', 'Reading Telegram session...');
   setProgress(10);
   await sleep(800);
@@ -493,13 +533,14 @@ async function run() {
     setStep('s1', 'error', 'Not found');
     setStatus('Open via Telegram only', 'bad');
     showResult('bad', '🚫', 'Access Denied', 'Please open this page\nthrough the Telegram bot.');
+    showContinueBtn('bad');
     setProgress(100); return;
   }
   setStep('s1', 'done', 'ID: ' + String(tg_id).slice(0,4) + '****');
   setProgress(25);
   await sleep(400);
 
-  // STEP 2: Fingerprint
+  // STEP 2
   setStep('s2', 'active', 'Scanning device...');
   await sleep(900);
   const browser_id = getFingerprint(botusername);
@@ -507,7 +548,7 @@ async function run() {
   setProgress(50);
   await sleep(400);
 
-  // STEP 3: API
+  // STEP 3
   setStep('s3', 'active', 'Connecting to server...');
   setStatus('Verifying with secure server...', '');
   await sleep(500);
@@ -529,6 +570,7 @@ async function run() {
     setStep('s3', 'error', 'Connection failed');
     setStatus('Server unreachable', 'bad');
     showResult('bad', '❌', 'Server Error', 'Could not reach the server.\nPlease try again.');
+    showContinueBtn('bad');
     setProgress(100); return;
   }
 
@@ -536,7 +578,7 @@ async function run() {
   setProgress(75);
   await sleep(400);
 
-  // STEP 4: Done
+  // STEP 4
   setStep('s4', 'active', 'Sending to bot...');
   await sleep(700);
   setStep('s4', 'done', 'Bot notified ✓');
@@ -551,32 +593,36 @@ async function run() {
     setStatus('Access granted!', 'ok');
     document.getElementById('mainTitle').textContent = 'Verified!';
     showResult('ok', '🎉', 'Verified Successfully', 'Identity confirmed.\nYour access has been unlocked.');
-    await sleep(2500); tg?.close();
+    showContinueBtn('ok');
 
   } else if (status === 'pass' && message === 'Already Verified') {
     setStatus('Session restored', 'ok');
     document.getElementById('mainTitle').textContent = 'Welcome Back!';
     showResult('ok', '✅', 'Already Verified', 'Your session has been restored.\nReturning to bot...');
-    await sleep(2500); tg?.close();
+    showContinueBtn('ok');
 
   } else if (status === 'fail' && message === 'Device already used') {
     setStatus('Same device detected', 'war');
     document.getElementById('mainTitle').textContent = 'Device Detected';
     showResult('war', '⚠️', 'Same Device', 'This device is linked to another account.\nYou can still use the bot.');
+    showContinueBtn('warn');
 
   } else if (status === 'fail' && message === 'VPN Detected') {
     setStatus('VPN detected', 'bad');
     document.getElementById('mainTitle').textContent = 'VPN Blocked';
     showResult('bad', '🚫', 'VPN Detected', 'Please turn off your VPN\nand try again.');
+    showContinueBtn('bad');
 
   } else if (status === 'fail' && message === 'Permanently Blocked') {
     setStatus('Access revoked', 'bad');
     document.getElementById('mainTitle').textContent = 'Blocked';
     showResult('bad', '🔴', 'Permanently Blocked', 'Your access has been revoked.\nContact support for help.');
+    showContinueBtn('bad');
 
   } else {
     setStatus('Verification failed', 'bad');
     showResult('bad', '❌', 'Failed', message || 'Something went wrong.\nPlease try again.');
+    showContinueBtn('bad');
   }
 }
 
