@@ -31,8 +31,6 @@ html,body{
   font-family:var(--font);
   overflow:hidden;
 }
-
-/* ── ANIMATED BG ── */
 .bg-wrap{
   position:fixed;inset:0;z-index:0;
   background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);
@@ -49,8 +47,6 @@ html,body{
   0%{opacity:1;transform:scale(1)}
   100%{opacity:.7;transform:scale(1.05)}
 }
-
-/* ── FLOATING ORBS ── */
 .orb{
   position:fixed;border-radius:50%;
   filter:blur(60px);pointer-events:none;
@@ -66,8 +62,6 @@ html,body{
   75%{transform:translate(20px,20px) rotate(270deg)}
   100%{transform:translate(0,0) rotate(360deg)}
 }
-
-/* ── GRID ── */
 .grid{
   position:fixed;inset:0;z-index:0;
   background-image:
@@ -75,8 +69,6 @@ html,body{
     linear-gradient(90deg,rgba(167,139,250,0.03) 1px,transparent 1px);
   background-size:50px 50px;
 }
-
-/* ── WRAP ── */
 .wrap{
   position:relative;z-index:2;
   height:100vh;
@@ -84,8 +76,6 @@ html,body{
   align-items:center;justify-content:center;
   padding:20px;
 }
-
-/* ── CARD ── */
 .card{
   width:100%;max-width:380px;
   background:var(--card);
@@ -99,8 +89,6 @@ html,body{
   opacity:0;transform:translateY(30px) scale(.97);
 }
 @keyframes cardIn{to{opacity:1;transform:translateY(0) scale(1)}}
-
-/* Top shimmer */
 .card::before{
   content:'';position:absolute;
   top:0;left:10%;right:10%;height:1px;
@@ -112,8 +100,6 @@ html,body{
   0%,100%{opacity:.5;left:10%;right:10%}
   50%{opacity:1;left:5%;right:5%}
 }
-
-/* ── LOGO AREA ── */
 .logo-area{
   display:flex;flex-direction:column;
   align-items:center;
@@ -171,8 +157,6 @@ html,body{
   font-size:12px;color:var(--muted);
   letter-spacing:.5px;
 }
-
-/* ── STEPS ── */
 .steps{margin-bottom:20px}
 .step{
   display:flex;align-items:center;
@@ -241,8 +225,6 @@ html,body{
   font-family:monospace;
 }
 .step.active .step-desc,.step.done .step-desc,.step.error .step-desc{opacity:.6}
-
-/* ── PROGRESS ── */
 .prog-wrap{
   height:3px;
   background:rgba(255,255,255,0.06);
@@ -265,8 +247,6 @@ html,body{
   animation:progShimmer 1.5s ease-in-out infinite;
 }
 @keyframes progShimmer{to{left:200%}}
-
-/* ── STATUS ── */
 .status{
   display:flex;align-items:center;gap:10px;
   padding:12px 14px;
@@ -290,8 +270,6 @@ html,body{
 .status.bad .s-dot{background:var(--danger);animation:none}
 .status.war .s-dot{background:var(--warn);animation:none}
 @keyframes dotBlink{0%,100%{opacity:1}50%{opacity:.2}}
-
-/* ── RESULT ── */
 .result{
   display:none;
   margin-top:14px;
@@ -315,8 +293,6 @@ html,body{
 .result.ok{background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.2);color:var(--success)}
 .result.bad{background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.2);color:var(--danger)}
 .result.war{background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.2);color:var(--warn)}
-
-/* ── POWERED BY ── */
 .powered{
   margin-top:20px;
   text-align:center;
@@ -441,24 +417,56 @@ function showResult(type, emoji, title, desc) {
   setLogo(emoji, type + '-ring');
 }
 
-// FNV-1a fingerprint — bot specific
+function getCanvasHash() {
+  try {
+    const c = document.createElement('canvas');
+    const ctx = c.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial';
+    ctx.fillStyle = '#f60';
+    ctx.fillRect(125, 1, 62, 20);
+    ctx.fillStyle = '#069';
+    ctx.fillText('Secure check', 2, 15);
+    ctx.fillStyle = 'rgba(102,204,0,0.7)';
+    ctx.fillText('Secure check', 4, 17);
+    const data = c.toDataURL();
+    let h = 0x811c9dc5;
+    for (let i = 0; i < data.length; i++) {
+      h ^= data.charCodeAt(i);
+      h = (h * 0x01000193) >>> 0;
+    }
+    return h.toString(36);
+  } catch { return 'c0'; }
+}
+
+function getWebGL() {
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+    if (!gl) return 'nogl';
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : 'unknown';
+    const vendor   = dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL)   : 'unknown';
+    return renderer + '|' + vendor;
+  } catch { return 'gl0'; }
+}
+
 function getFingerprint(botusername) {
-  const n   = navigator;
+  const n = navigator;
   const raw = [
-    n.userAgent, n.language,
-    screen.width + 'x' + screen.height + 'x' + screen.colorDepth,
-    new Date().getTimezoneOffset(),
+    n.userAgent,
+    screen.width + 'x' + screen.height,
     n.hardwareConcurrency || 0,
-    n.deviceMemory || 0,
     n.platform || '',
-    !!n.cookieEnabled,
-    !!window.indexedDB,
+    n.deviceMemory || 0,
+    getCanvasHash(),
+    getWebGL(),
     botusername
   ].join('||');
   let h = 0x811c9dc5;
   for (let i = 0; i < raw.length; i++) {
     h ^= raw.charCodeAt(i);
-    h  = (h * 0x01000193) >>> 0;
+    h = (h * 0x01000193) >>> 0;
   }
   return h.toString(36) + raw.length.toString(36);
 }
@@ -467,7 +475,6 @@ async function run() {
   const tg = window.Telegram?.WebApp;
   if (tg) { tg.ready(); tg.expand(); }
 
-  // URL params
   const p           = new URLSearchParams(window.location.search);
   const botusername = p.get('botusername') || '';
   const bottoken    = p.get('bottoken')    || '';
@@ -476,7 +483,7 @@ async function run() {
 
   await sleep(500);
 
-  // ── STEP 1: Telegram ID ──
+  // STEP 1: Telegram ID
   setStep('s1', 'active', 'Reading Telegram session...');
   setProgress(10);
   await sleep(800);
@@ -492,7 +499,7 @@ async function run() {
   setProgress(25);
   await sleep(400);
 
-  // ── STEP 2: Fingerprint ──
+  // STEP 2: Fingerprint
   setStep('s2', 'active', 'Scanning device...');
   await sleep(900);
   const browser_id = getFingerprint(botusername);
@@ -500,7 +507,7 @@ async function run() {
   setProgress(50);
   await sleep(400);
 
-  // ── STEP 3: API ──
+  // STEP 3: API
   setStep('s3', 'active', 'Connecting to server...');
   setStatus('Verifying with secure server...', '');
   await sleep(500);
@@ -529,14 +536,14 @@ async function run() {
   setProgress(75);
   await sleep(400);
 
-  // ── STEP 4: Done ──
+  // STEP 4: Done
   setStep('s4', 'active', 'Sending to bot...');
   await sleep(700);
   setStep('s4', 'done', 'Bot notified ✓');
   setProgress(100);
   await sleep(400);
 
-  // ── RESULT ──
+  // RESULT
   const status  = result?.status  || 'fail';
   const message = result?.message || '';
 
@@ -565,7 +572,7 @@ async function run() {
   } else if (status === 'fail' && message === 'Permanently Blocked') {
     setStatus('Access revoked', 'bad');
     document.getElementById('mainTitle').textContent = 'Blocked';
-    showResult('bad', '🔴', 'Same Blocked', 'Your access has been revoked.\nContact support for help.');
+    showResult('bad', '🔴', 'Permanently Blocked', 'Your access has been revoked.\nContact support for help.');
 
   } else {
     setStatus('Verification failed', 'bad');
