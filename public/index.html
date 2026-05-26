@@ -3,23 +3,22 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Secure Verification</title>
+<title>Device Verification</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#080b14;
-  --card:rgba(255,255,255,0.04);
-  --border:rgba(255,255,255,0.07);
-  --accent:#00c6ff;
-  --accent2:#0072ff;
-  --accent3:#7b2ff7;
-  --success:#00e5a0;
+  --bg:#0d0f1a;
+  --card:#161929;
+  --border:rgba(255,255,255,0.06);
+  --accent:#00e5c0;
+  --accent2:#7b6ef6;
+  --success:#00e5c0;
   --danger:#ff4d6d;
   --warn:#ffbe0b;
-  --text:#f0f4ff;
-  --muted:#8895b3;
+  --text:#e8eaf6;
+  --muted:#6b7499;
   --font:'Inter',sans-serif;
   --font2:'Poppins',sans-serif;
 }
@@ -30,431 +29,292 @@ html,body{
   font-family:var(--font);
   overflow:hidden;
 }
+
+/* BG */
 .bg-wrap{
   position:fixed;inset:0;z-index:0;
-  background:linear-gradient(135deg,#080b14 0%,#0d1829 50%,#0a0f1e 100%);
-  overflow:hidden;
+  background:linear-gradient(160deg,#0d0f1a 0%,#11152a 60%,#180d2e 100%);
 }
-.bg-wrap::before{
+.bg-wrap::after{
   content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 70% 50% at 15% 20%,rgba(0,198,255,0.1) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 45% at 85% 80%,rgba(123,47,247,0.12) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 40% at 50% 50%,rgba(0,114,255,0.06) 0%,transparent 70%);
-  animation:bgShift 10s ease-in-out infinite alternate;
+    radial-gradient(ellipse 60% 40% at 50% 100%,rgba(123,110,246,0.18) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 30% at 80% 10%,rgba(0,229,192,0.08) 0%,transparent 60%);
 }
-@keyframes bgShift{
-  0%{opacity:1;transform:scale(1)}
-  100%{opacity:.8;transform:scale(1.04)}
-}
-.orb{
-  position:fixed;border-radius:50%;
-  filter:blur(70px);pointer-events:none;
-  animation:orbFloat linear infinite;
-}
-.orb1{width:280px;height:280px;background:rgba(0,198,255,0.08);top:-60px;left:-60px;animation-duration:22s}
-.orb2{width:240px;height:240px;background:rgba(123,47,247,0.09);bottom:-50px;right:-50px;animation-duration:28s;animation-direction:reverse}
-.orb3{width:180px;height:180px;background:rgba(0,114,255,0.07);top:40%;left:40%;animation-duration:18s}
-@keyframes orbFloat{
-  0%{transform:translate(0,0) rotate(0deg)}
-  25%{transform:translate(25px,-18px) rotate(90deg)}
-  50%{transform:translate(-18px,25px) rotate(180deg)}
-  75%{transform:translate(18px,18px) rotate(270deg)}
-  100%{transform:translate(0,0) rotate(360deg)}
-}
-.grid{
-  position:fixed;inset:0;z-index:0;
-  background-image:
-    linear-gradient(rgba(0,198,255,0.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,198,255,0.025) 1px,transparent 1px);
-  background-size:55px 55px;
-}
+
+/* WRAP */
 .wrap{
   position:relative;z-index:2;
   height:100vh;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:20px;
+  padding:24px;
 }
+
+/* CARD */
 .card{
-  width:100%;max-width:380px;
+  width:100%;max-width:360px;
   background:var(--card);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
   border:1px solid var(--border);
-  border-radius:26px;
-  padding:32px 26px 26px;
-  position:relative;
-  animation:cardIn .7s cubic-bezier(.16,1,.3,1) forwards;
-  opacity:0;transform:translateY(30px) scale(.97);
-}
-@keyframes cardIn{to{opacity:1;transform:translateY(0) scale(1)}}
-.card::before{
-  content:'';position:absolute;
-  top:0;left:12%;right:12%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--accent),var(--accent3),transparent);
-  border-radius:1px;
-  animation:shimmerLine 3s ease-in-out infinite;
-}
-@keyframes shimmerLine{
-  0%,100%{opacity:.4;left:12%;right:12%}
-  50%{opacity:1;left:6%;right:6%}
-}
-.logo-area{
-  display:flex;flex-direction:column;
-  align-items:center;
-  margin-bottom:26px;
+  border-radius:28px;
+  padding:44px 28px 36px;
   text-align:center;
-}
-.logo-ring{
-  width:70px;height:70px;
-  border-radius:50%;
-  background:linear-gradient(135deg,rgba(0,198,255,0.15),rgba(123,47,247,0.15));
-  border:1.5px solid rgba(0,198,255,0.25);
-  display:flex;align-items:center;justify-content:center;
-  font-size:26px;
-  margin-bottom:14px;
   position:relative;
+  animation:cardIn .6s cubic-bezier(.16,1,.3,1) forwards;
+  opacity:0;transform:translateY(24px);
+  box-shadow:0 24px 80px rgba(0,0,0,0.5);
+}
+@keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+
+/* LOADER RING */
+.loader-wrap{
+  width:110px;height:110px;
+  margin:0 auto 28px;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.ring-svg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  transform:rotate(-90deg);
+}
+.ring-track{
+  fill:none;
+  stroke:rgba(255,255,255,0.06);
+  stroke-width:3;
+}
+.ring-fill{
+  fill:none;
+  stroke:url(#ringGrad);
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-dasharray:283;
+  stroke-dashoffset:283;
+  transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1);
+}
+.ring-icon{
+  font-size:36px;
+  position:relative;z-index:1;
   transition:all .4s;
 }
-.logo-ring::before{
-  content:'';position:absolute;inset:-6px;
-  border-radius:50%;
-  border:1px solid rgba(0,198,255,0.12);
-  animation:ringPulse 2s ease-in-out infinite;
-}
-.logo-ring::after{
-  content:'';position:absolute;inset:-13px;
-  border-radius:50%;
-  border:1px solid rgba(0,198,255,0.05);
-  animation:ringPulse 2s ease-in-out infinite .4s;
-}
-@keyframes ringPulse{
-  0%,100%{transform:scale(1);opacity:1}
-  50%{transform:scale(1.08);opacity:.4}
-}
-.logo-ring.success-ring{
-  background:linear-gradient(135deg,rgba(0,229,160,0.2),rgba(0,229,160,0.08));
-  border-color:rgba(0,229,160,0.4);
-}
-.logo-ring.fail-ring{
-  background:linear-gradient(135deg,rgba(255,77,109,0.2),rgba(255,77,109,0.08));
-  border-color:rgba(255,77,109,0.4);
-}
-.logo-ring.warn-ring{
-  background:linear-gradient(135deg,rgba(255,190,11,0.2),rgba(255,190,11,0.08));
-  border-color:rgba(255,190,11,0.4);
-}
-.logo-title{
+
+/* TITLE */
+.main-title{
   font-family:var(--font2);
-  font-size:18px;font-weight:700;
-  background:linear-gradient(135deg,var(--accent),var(--accent3));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  margin-bottom:4px;
-}
-.logo-sub{
-  font-size:12px;color:var(--muted);
-  letter-spacing:.4px;
-}
-.steps{margin-bottom:18px}
-.step{
-  display:flex;align-items:center;
-  gap:12px;padding:9px 13px;
-  border-radius:12px;
-  margin-bottom:6px;
-  border:1px solid transparent;
-  transition:all .3s;
-  background:transparent;
-}
-.step.active{
-  background:rgba(0,198,255,0.05);
-  border-color:rgba(0,198,255,0.15);
-}
-.step.done{
-  background:rgba(0,229,160,0.04);
-  border-color:rgba(0,229,160,0.12);
-}
-.step.error{
-  background:rgba(255,77,109,0.04);
-  border-color:rgba(255,77,109,0.12);
-}
-.step-icon{
-  width:30px;height:30px;flex-shrink:0;
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:600;
-  border:1.5px solid rgba(255,255,255,0.07);
-  background:rgba(255,255,255,0.03);
-  color:var(--muted);
-  transition:all .3s;
-}
-.step.active .step-icon{
-  border-color:var(--accent);
-  background:rgba(0,198,255,0.1);
+  font-size:22px;font-weight:700;
   color:var(--accent);
-  box-shadow:0 0 12px rgba(0,198,255,0.2);
-  animation:iconPulse 1s ease-in-out infinite;
+  margin-bottom:8px;
+  transition:color .4s;
+  line-height:1.2;
 }
-@keyframes iconPulse{
-  0%,100%{box-shadow:0 0 12px rgba(0,198,255,0.2)}
-  50%{box-shadow:0 0 22px rgba(0,198,255,0.45)}
-}
-.step.done .step-icon{
-  border-color:var(--success);
-  background:rgba(0,229,160,0.1);
-  color:var(--success);
-}
-.step.error .step-icon{
-  border-color:var(--danger);
-  background:rgba(255,77,109,0.1);
-  color:var(--danger);
-}
-.step-text{flex:1}
-.step-name{
-  font-size:13px;font-weight:500;
-  color:var(--muted);transition:color .3s;
-}
-.step.active .step-name{color:var(--text)}
-.step.done .step-name{color:var(--success)}
-.step.error .step-name{color:var(--danger)}
-.step-desc{
-  font-size:11px;color:var(--muted);
-  margin-top:1px;opacity:0;
-  transition:opacity .3s;
-  font-family:monospace;
-}
-.step.active .step-desc,.step.done .step-desc,.step.error .step-desc{opacity:.55}
-.prog-wrap{
-  height:3px;
-  background:rgba(255,255,255,0.05);
-  border-radius:99px;
-  margin-bottom:14px;
-  overflow:hidden;
-}
-.prog-fill{
-  height:100%;
-  border-radius:99px;
-  background:linear-gradient(90deg,var(--accent2),var(--accent),var(--accent3));
-  width:0%;
-  transition:width .5s cubic-bezier(.4,0,.2,1);
-  position:relative;overflow:hidden;
-}
-.prog-fill::after{
-  content:'';position:absolute;
-  top:0;left:-100%;width:100%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);
-  animation:progShimmer 1.5s ease-in-out infinite;
-}
-@keyframes progShimmer{to{left:200%}}
-.status{
-  display:flex;align-items:center;gap:10px;
-  padding:11px 14px;
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.05);
-  border-radius:12px;
-  font-size:13px;color:var(--muted);
+.main-sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:32px;
+  min-height:20px;
   transition:all .3s;
-  min-height:44px;
 }
-.status.ok{border-color:rgba(0,229,160,0.2);background:rgba(0,229,160,0.04);color:var(--success)}
-.status.bad{border-color:rgba(255,77,109,0.2);background:rgba(255,77,109,0.04);color:var(--danger)}
-.status.war{border-color:rgba(255,190,11,0.2);background:rgba(255,190,11,0.04);color:var(--warn)}
-.s-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--muted);flex-shrink:0;
-  transition:background .3s;
+
+/* STATUS STEPS - minimal dots */
+.dots-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:8px;
+  margin-bottom:28px;
 }
-.status .s-dot{animation:dotBlink .8s ease-in-out infinite}
-.status.ok .s-dot{background:var(--success);animation:none}
-.status.bad .s-dot{background:var(--danger);animation:none}
-.status.war .s-dot{background:var(--warn);animation:none}
-@keyframes dotBlink{0%,100%{opacity:1}50%{opacity:.2}}
-.result{
+.dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.1);
+  transition:all .4s;
+}
+.dot.active{
+  background:var(--accent2);
+  box-shadow:0 0 10px rgba(123,110,246,0.6);
+  transform:scale(1.3);
+}
+.dot.done{
+  background:var(--accent);
+  box-shadow:0 0 8px rgba(0,229,192,0.4);
+}
+.dot.error{
+  background:var(--danger);
+}
+
+/* STATUS TEXT */
+.status-txt{
+  font-size:12px;
+  color:var(--muted);
+  font-family:monospace;
+  margin-bottom:28px;
+  min-height:18px;
+  transition:all .3s;
+  letter-spacing:.3px;
+}
+
+/* RESULT AREA */
+.result-area{
   display:none;
-  margin-top:14px;
-  border-radius:16px;
-  padding:18px;
-  text-align:center;
-  animation:cardIn .4s ease forwards;
+  margin-bottom:24px;
 }
-.result.show{display:block}
-.r-emoji{font-size:34px;margin-bottom:8px;display:block}
-.r-title{
-  font-family:var(--font2);
-  font-size:15px;font-weight:700;
-  margin-bottom:5px;
-}
-.r-desc{
-  font-size:12px;line-height:1.7;
-  opacity:.7;font-family:monospace;
+.result-area.show{display:block}
+.result-msg{
+  font-size:12px;
+  line-height:1.8;
+  opacity:.7;
+  font-family:monospace;
   white-space:pre-line;
 }
-.result.ok{background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.18);color:var(--success)}
-.result.bad{background:rgba(255,77,109,0.06);border:1px solid rgba(255,77,109,0.18);color:var(--danger)}
-.result.war{background:rgba(255,190,11,0.06);border:1px solid rgba(255,190,11,0.18);color:var(--warn)}
 
-/* CONTINUE BUTTON */
-.btn-continue{
+/* BUTTON */
+.btn-proceed{
   display:none;
-  margin-top:14px;
   width:100%;
-  padding:13px;
-  border-radius:14px;
+  padding:15px;
+  border-radius:16px;
   border:none;
   cursor:pointer;
   font-family:var(--font2);
-  font-size:14px;font-weight:700;
-  letter-spacing:.3px;
-  position:relative;
-  overflow:hidden;
-  transition:transform .2s, box-shadow .2s;
+  font-size:15px;font-weight:700;
+  letter-spacing:.2px;
+  position:relative;overflow:hidden;
+  transition:transform .15s, box-shadow .15s;
+  margin-bottom:0;
 }
-.btn-continue.show{display:block}
-.btn-continue.ok-btn{
-  background:linear-gradient(135deg,#00c6ff,#0072ff);
+.btn-proceed.show{display:block}
+.btn-proceed.ok{
+  background:linear-gradient(135deg,#00e5c0,#0072ff);
   color:#fff;
-  box-shadow:0 4px 20px rgba(0,198,255,0.3);
+  box-shadow:0 6px 28px rgba(0,229,192,0.3);
 }
-.btn-continue.warn-btn{
+.btn-proceed.warn{
   background:linear-gradient(135deg,#ffbe0b,#fb8500);
   color:#000;
-  box-shadow:0 4px 20px rgba(255,190,11,0.3);
+  box-shadow:0 6px 28px rgba(255,190,11,0.3);
 }
-.btn-continue.bad-btn{
+.btn-proceed.bad{
   background:linear-gradient(135deg,#ff4d6d,#c9184a);
   color:#fff;
-  box-shadow:0 4px 20px rgba(255,77,109,0.3);
+  box-shadow:0 6px 28px rgba(255,77,109,0.3);
 }
-.btn-continue::before{
+.btn-proceed::before{
   content:'';position:absolute;
   top:0;left:-100%;width:100%;height:100%;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
-  animation:btnShimmer 2s ease-in-out infinite;
+  animation:btnShimmer 2.5s ease-in-out infinite;
 }
 @keyframes btnShimmer{to{left:200%}}
-.btn-continue:active{transform:scale(.97)}
+.btn-proceed:active{transform:scale(.97)}
+
+/* POWERED */
+.powered{
+  margin-top:24px;
+  font-size:11px;
+  color:var(--muted);
+  opacity:.5;
+  letter-spacing:.5px;
+}
+.powered b{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  font-weight:700;
+}
 </style>
 </head>
 <body>
 
 <div class="bg-wrap"></div>
-<div class="grid"></div>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
 
 <div class="wrap">
   <div class="card">
 
-    <div class="logo-area">
-      <div class="logo-ring" id="logoRing">🔐</div>
-      <div class="logo-title" id="mainTitle">Secure Verification</div>
-      <div class="logo-sub">Checking your identity...</div>
+    <!-- RING LOADER -->
+    <div class="loader-wrap">
+      <svg class="ring-svg" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#7b6ef6"/>
+            <stop offset="100%" stop-color="#00e5c0"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring-track" cx="50" cy="50" r="45"/>
+        <circle class="ring-fill" id="ringFill" cx="50" cy="50" r="45"/>
+      </svg>
+      <div class="ring-icon" id="ringIcon">🔐</div>
     </div>
 
-    <div class="steps">
-      <div class="step active" id="s1">
-        <div class="step-icon">①</div>
-        <div class="step-text">
-          <div class="step-name">Telegram Identity</div>
-          <div class="step-desc" id="d1">Reading session data...</div>
-        </div>
-      </div>
-      <div class="step" id="s2">
-        <div class="step-icon">②</div>
-        <div class="step-text">
-          <div class="step-name">Device Fingerprint</div>
-          <div class="step-desc" id="d2">Generating unique key...</div>
-        </div>
-      </div>
-      <div class="step" id="s3">
-        <div class="step-icon">③</div>
-        <div class="step-text">
-          <div class="step-name">Server Check</div>
-          <div class="step-desc" id="d3">Verifying credentials...</div>
-        </div>
-      </div>
-      <div class="step" id="s4">
-        <div class="step-icon">④</div>
-        <div class="step-text">
-          <div class="step-name">Final Dispatch</div>
-          <div class="step-desc" id="d4">Notifying bot...</div>
-        </div>
-      </div>
+    <div class="main-title" id="mainTitle">Device Verification</div>
+    <div class="main-sub" id="mainSub">Inspecting Your Device...</div>
+
+    <!-- DOTS -->
+    <div class="dots-row">
+      <div class="dot active" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+      <div class="dot" id="dot3"></div>
+      <div class="dot" id="dot4"></div>
     </div>
 
-    <div class="prog-wrap">
-      <div class="prog-fill" id="prog"></div>
+    <div class="status-txt" id="statusTxt">Initializing...</div>
+
+    <div class="result-area" id="resultArea">
+      <div class="result-msg" id="resultMsg"></div>
     </div>
 
-    <div class="status" id="statusBox">
-      <div class="s-dot"></div>
-      <span id="statusTxt">Initializing secure session...</span>
-    </div>
-
-    <div class="result" id="result">
-      <span class="r-emoji" id="rEmoji"></span>
-      <div class="r-title" id="rTitle"></div>
-      <div class="r-desc" id="rDesc"></div>
-    </div>
-
-    <button class="btn-continue" id="btnContinue" onclick="continueTgBot()">
-      Continue to Bot →
+    <button class="btn-proceed" id="btnProceed" onclick="continueTgBot()">
+      Proceed to Bot →
     </button>
 
   </div>
+
+  <div class="powered">© 2026 Powered by <b>NEXO</b></div>
 </div>
 
 <script>
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function setStep(id, state, desc) {
-  const el  = document.getElementById(id);
-  const ico = el.querySelector('.step-icon');
-  el.className = 'step ' + state;
-  if (state === 'done')  ico.textContent = '✓';
-  if (state === 'error') ico.textContent = '✗';
-  if (desc) document.getElementById(id.replace('s','d')).textContent = desc;
+// Ring progress 0-100
+function setRing(pct) {
+  const circ = 2 * Math.PI * 45; // 282.7
+  const offset = circ - (pct / 100) * circ;
+  document.getElementById('ringFill').style.strokeDashoffset = offset;
 }
 
-function setProgress(p) {
-  document.getElementById('prog').style.width = p + '%';
+function setDot(id, state) {
+  document.getElementById('dot' + id).className = 'dot ' + state;
 }
 
-function setStatus(txt, cls) {
-  const b = document.getElementById('statusBox');
-  b.className = 'status ' + (cls || '');
+function setStatus(txt) {
   document.getElementById('statusTxt').textContent = txt;
 }
 
-function setLogo(emoji, cls) {
-  const r = document.getElementById('logoRing');
-  r.textContent = emoji;
-  r.className   = 'logo-ring ' + (cls || '');
+function setTitle(t, s) {
+  document.getElementById('mainTitle').textContent = t;
+  if (s !== undefined) document.getElementById('mainSub').textContent = s;
 }
 
-function showResult(type, emoji, title, desc) {
-  const b = document.getElementById('result');
-  document.getElementById('rEmoji').textContent = emoji;
-  document.getElementById('rTitle').textContent = title;
-  document.getElementById('rDesc').textContent  = desc;
-  b.className = 'result show ' + type;
-  setLogo(emoji, type + '-ring');
+function setIcon(emoji) {
+  document.getElementById('ringIcon').textContent = emoji;
 }
 
-function showContinueBtn(type) {
-  const btn = document.getElementById('btnContinue');
-  btn.className = 'btn-continue show ' + type + '-btn';
+function showResult(msg) {
+  const a = document.getElementById('resultArea');
+  document.getElementById('resultMsg').textContent = msg;
+  a.className = 'result-area show';
+}
+
+function showBtn(type) {
+  const b = document.getElementById('btnProceed');
+  b.className = 'btn-proceed show ' + type;
+}
+
+function setTitleColor(color) {
+  document.getElementById('mainTitle').style.color = color;
 }
 
 function continueTgBot() {
   const tg = window.Telegram?.WebApp;
-  if (tg) {
-    tg.close();
-  } else {
-    window.close();
-  }
+  if (tg) tg.close();
+  else window.close();
 }
 
 function getCanvasHash() {
@@ -521,36 +381,44 @@ async function run() {
   const webhook     = p.get('webhook')     || '';
   const hash        = p.get('hash')        || '';
 
-  await sleep(500);
+  await sleep(400);
 
-  // STEP 1
-  setStep('s1', 'active', 'Reading Telegram session...');
-  setProgress(10);
+  // STEP 1 - Telegram ID
+  setDot(1, 'active');
+  setStatus('Reading Telegram session...');
+  setRing(15);
   await sleep(800);
 
   const tg_id = tg?.initDataUnsafe?.user?.id;
   if (!tg_id) {
-    setStep('s1', 'error', 'Not found');
-    setStatus('Open via Telegram only', 'bad');
-    showResult('bad', '🚫', 'Access Denied', 'Please open this page\nthrough the Telegram bot.');
-    showContinueBtn('bad');
-    setProgress(100); return;
+    setDot(1, 'error');
+    setIcon('🚫');
+    setTitle('Access Denied', 'Open via Telegram only');
+    setTitleColor('var(--danger)');
+    setStatus('Telegram session not found');
+    showResult('Please open this page\nthrough the Telegram bot.');
+    showBtn('bad');
+    setRing(100);
+    return;
   }
-  setStep('s1', 'done', 'ID: ' + String(tg_id).slice(0,4) + '****');
-  setProgress(25);
-  await sleep(400);
+  setDot(1, 'done');
+  setRing(30);
+  await sleep(300);
 
-  // STEP 2
-  setStep('s2', 'active', 'Scanning device...');
+  // STEP 2 - Fingerprint
+  setDot(2, 'active');
+  setStatus('Scanning device hardware...');
+  setRing(45);
   await sleep(900);
   const browser_id = getFingerprint(botusername);
-  setStep('s2', 'done', 'Key: ' + browser_id.slice(0,6) + '...');
-  setProgress(50);
-  await sleep(400);
+  setDot(2, 'done');
+  setRing(60);
+  await sleep(300);
 
-  // STEP 3
-  setStep('s3', 'active', 'Connecting to server...');
-  setStatus('Verifying with secure server...', '');
+  // STEP 3 - API
+  setDot(3, 'active');
+  setStatus('Connecting to server...');
+  setRing(70);
   await sleep(500);
 
   let result = null;
@@ -565,24 +433,29 @@ async function run() {
       `&webhook=${encodeURIComponent(webhook)}`;
 
     const resp = await fetch(url);
-    result     = await resp.json();
+    result = await resp.json();
   } catch (e) {
-    setStep('s3', 'error', 'Connection failed');
-    setStatus('Server unreachable', 'bad');
-    showResult('bad', '❌', 'Server Error', 'Could not reach the server.\nPlease try again.');
-    showContinueBtn('bad');
-    setProgress(100); return;
+    setDot(3, 'error');
+    setIcon('❌');
+    setTitle('Server Error', 'Could not reach server');
+    setTitleColor('var(--danger)');
+    setStatus('Connection failed');
+    showResult('Could not reach the server.\nPlease try again.');
+    showBtn('bad');
+    setRing(100);
+    return;
   }
 
-  setStep('s3', 'done', 'Response received');
-  setProgress(75);
+  setDot(3, 'done');
+  setRing(85);
   await sleep(400);
 
-  // STEP 4
-  setStep('s4', 'active', 'Sending to bot...');
+  // STEP 4 - Done
+  setDot(4, 'active');
+  setStatus('Notifying bot...');
   await sleep(700);
-  setStep('s4', 'done', 'Bot notified ✓');
-  setProgress(100);
+  setDot(4, 'done');
+  setRing(100);
   await sleep(400);
 
   // RESULT
@@ -590,43 +463,57 @@ async function run() {
   const message = result?.message || '';
 
   if (status === 'pass' && message === 'Verified Successfully') {
-    setStatus('Access granted!', 'ok');
-    document.getElementById('mainTitle').textContent = 'Verified!';
-    showResult('ok', '🎉', 'Verified Successfully', 'Identity confirmed.\nYour access has been unlocked.');
-    showContinueBtn('ok');
+    setIcon('✅');
+    setTitle('Verified!', 'This account is now verified.');
+    setTitleColor('var(--success)');
+    setStatus('Identity confirmed successfully');
+    showResult('Your access has been unlocked.\nWelcome aboard!');
+    showBtn('ok');
 
   } else if (status === 'pass' && message === 'Already Verified') {
-    setStatus('Session restored', 'ok');
-    document.getElementById('mainTitle').textContent = 'Welcome Back!';
-    showResult('ok', '✅', 'Already Verified', 'Your session has been restored.\nReturning to bot...');
-    showContinueBtn('ok');
+    setIcon('✅');
+    setTitle('Already Verified', 'This account is already verified.');
+    setTitleColor('var(--success)');
+    setStatus('Session restored successfully');
+    showResult('Your session is active.\nReturning to bot...');
+    showBtn('ok');
 
   } else if (status === 'fail' && message === 'Device already used') {
-    setStatus('Same device detected', 'war');
-    document.getElementById('mainTitle').textContent = 'Device Detected';
-    showResult('war', '⚠️', 'Same Device', 'This device is linked to another account.\nYou can still use the bot.');
-    showContinueBtn('warn');
+    setIcon('⚠️');
+    setTitle('Device Detected', 'This device is linked to another account.');
+    setTitleColor('var(--warn)');
+    setStatus('Same device detected');
+    showResult('You can still use the bot.\nBut multi-account is not allowed.');
+    showBtn('warn');
 
   } else if (status === 'fail' && message === 'VPN Detected') {
-    setStatus('VPN detected', 'bad');
-    document.getElementById('mainTitle').textContent = 'VPN Blocked';
-    showResult('bad', '🚫', 'VPN Detected', 'Please turn off your VPN\nand try again.');
-    showContinueBtn('bad');
+    setIcon('🚫');
+    setTitle('VPN Blocked', 'VPN or Proxy detected.');
+    setTitleColor('var(--danger)');
+    setStatus('VPN detected on your connection');
+    showResult('Please turn off your VPN\nand try again.');
+    showBtn('bad');
 
   } else if (status === 'fail' && message === 'Permanently Blocked') {
-    setStatus('Access revoked', 'bad');
-    document.getElementById('mainTitle').textContent = 'Blocked';
-    showResult('bad', '🔴', 'Permanently Blocked', 'Your access has been revoked.\nContact support for help.');
-    showContinueBtn('bad');
+    setIcon('🔴');
+    setTitle('Blocked', 'Your access has been revoked.');
+    setTitleColor('var(--danger)');
+    setStatus('Access permanently revoked');
+    showResult('Contact support for help.');
+    showBtn('bad');
 
   } else {
-    setStatus('Verification failed', 'bad');
-    showResult('bad', '❌', 'Failed', message || 'Something went wrong.\nPlease try again.');
-    showContinueBtn('bad');
+    setIcon('❌');
+    setTitle('Failed', 'Verification failed.');
+    setTitleColor('var(--danger)');
+    setStatus('Something went wrong');
+    showResult(message || 'Please try again.');
+    showBtn('bad');
   }
 }
 
 window.addEventListener('load', run);
 </script>
 </body>
-</html>
+                                                      </html>
+                                                      
