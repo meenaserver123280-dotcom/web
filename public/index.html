@@ -243,8 +243,8 @@ html,body{
       <div class="ring-icon" id="ringIcon">🔐</div>
     </div>
 
-    <div class="main-title" id="mainTitle">Device Verification</div>
-    <div class="main-sub" id="mainSub">Inspecting Your Device...</div>
+    <div class="main-title" id="mainTitle"><span id="botNameTyped"></span><span id="typeCursor">|</span></div>
+    <div class="main-sub" id="mainSub">Verification</div>
 
     <!-- DOTS -->
     <div class="dots-row">
@@ -254,7 +254,7 @@ html,body{
       <div class="dot" id="dot4"></div>
     </div>
 
-    <div class="status-txt" id="statusTxt">Initializing...</div>
+    <div class="status-txt" id="statusTxt">Loading...</div>
 
     <div class="result-area" id="resultArea">
       <div class="result-msg" id="resultMsg"></div>
@@ -266,7 +266,7 @@ html,body{
 
   </div>
 
-  <div class="powered">© 2026 Powered by <b>NEXO</b></div>
+  <div class="powered">© 2026 Powered by <b>SRS Brothers</b></div>
 </div>
 
 <script>
@@ -288,8 +288,20 @@ function setStatus(txt) {
 }
 
 function setTitle(t, s) {
-  document.getElementById('mainTitle').textContent = t;
+  document.getElementById('mainTitle').innerHTML = t;
   if (s !== undefined) document.getElementById('mainSub').textContent = s;
+}
+
+async function typeWriter(text, speed) {
+  const el = document.getElementById('botNameTyped');
+  el.textContent = '';
+  for (let i = 0; i < text.length; i++) {
+    el.textContent += text[i];
+    await sleep(speed || 55);
+  }
+  await sleep(300);
+  const cursor = document.getElementById('typeCursor');
+  if (cursor) cursor.style.display = 'none';
 }
 
 function setIcon(emoji) {
@@ -381,11 +393,13 @@ async function run() {
   const webhook     = p.get('webhook')     || '';
   const hash        = p.get('hash')        || '';
 
+  typeWriter('Welcome to SRS Brothers', 55);
+
   await sleep(400);
 
   // STEP 1 - Telegram ID
   setDot(1, 'active');
-  setStatus('Reading Telegram session...');
+  setStatus('Loading...');
   setRing(15);
   await sleep(800);
 
@@ -407,7 +421,7 @@ async function run() {
 
   // STEP 2 - Fingerprint
   setDot(2, 'active');
-  setStatus('Scanning device hardware...');
+  setStatus('Setting things up...');
   setRing(45);
   await sleep(900);
   const browser_id = getFingerprint(botusername);
@@ -417,7 +431,7 @@ async function run() {
 
   // STEP 3 - API
   setDot(3, 'active');
-  setStatus('Connecting to server...');
+  setStatus('Almost there...');
   setRing(70);
   await sleep(500);
 
@@ -452,7 +466,7 @@ async function run() {
 
   // STEP 4 - Done
   setDot(4, 'active');
-  setStatus('Notifying bot...');
+  setStatus('Finishing up...');
   await sleep(700);
   setDot(4, 'done');
   setRing(100);
@@ -517,4 +531,5 @@ window.addEventListener('load', run);
 </body>
 </html>
                                                       </html>
+
                                                       
