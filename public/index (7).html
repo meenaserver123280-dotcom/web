@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Verification</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#08070c;
+  --bg2:#0e0b16;
+  --card:#141019;
+  --card-border:rgba(255,255,255,0.07);
+  --accent:#c9a3ff;
+  --accent2:#ff9d6c;
+  --success:#5eead4;
+  --danger:#ff6b81;
+  --warn:#ffcb6b;
+  --text:#f3f0f9;
+  --muted:#8b8599;
+  --font:'Manrope',sans-serif;
+  --font-display:'Space Grotesk',sans-serif;
+}
+html,body{
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
+  overflow:hidden;
+}
+
+/* AMBIENT BACKGROUND */
+.bg-wrap{
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(201,163,255,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 45% at 100% 100%, rgba(255,157,108,0.10) 0%, transparent 55%),
+    linear-gradient(160deg, #08070c 0%, #0c0912 55%, #120b1d 100%);
+}
+.bg-wrap::after{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0);
+  background-size:26px 26px;
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 40%, black 0%, transparent 75%);
+}
+.grain{
+  position:fixed;inset:0;z-index:1;
+  opacity:.035;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrap{
+  position:relative;z-index:2;
+  height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+
+/* CARD */
+.card{
+  width:100%;max-width:380px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.01)), var(--card);
+  border:1px solid var(--card-border);
+  border-radius:24px;
+  padding:0;
+  text-align:center;
+  position:relative;
+  animation:cardIn .7s cubic-bezier(.16,1,.3,1) forwards;
+  opacity:0;transform:translateY(20px) scale(.98);
+  box-shadow:0 30px 90px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.02) inset;
+  overflow:hidden;
+}
+@keyframes cardIn{to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* top hairline accent */
+.card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
+  opacity:.6;
+}
+
+.card-inner{
+  padding:40px 30px 32px;
+}
+
+/* eyebrow */
+.eyebrow{
+  font-family:var(--font-display);
+  font-size:11px;
+  letter-spacing:2.2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:26px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.eyebrow::before,.eyebrow::after{
+  content:'';
+  height:1px;width:20px;
+  background:linear-gradient(90deg, transparent, var(--card-border));
+}
+.eyebrow::after{background:linear-gradient(90deg, var(--card-border), transparent)}
+
+/* LOADER RING */
+.loader-wrap{
+  width:96px;height:96px;
+  margin:0 auto 30px;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.ring-svg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  transform:rotate(-90deg);
+}
+.ring-track{
+  fill:none;
+  stroke:rgba(255,255,255,0.05);
+  stroke-width:2.5;
+}
+.ring-fill{
+  fill:none;
+  stroke:url(#ringGrad);
+  stroke-width:2.5;
+  stroke-linecap:round;
+  stroke-dasharray:283;
+  stroke-dashoffset:283;
+  transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 0 6px rgba(201,163,255,0.35));
+}
+.ring-icon{
+  font-size:30px;
+  position:relative;z-index:1;
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* TITLE */
+.main-title{
+  font-family:var(--font-display);
+  font-size:21px;font-weight:700;
+  letter-spacing:-.2px;
+  color:var(--text);
+  margin-bottom:8px;
+  transition:color .4s;
+  line-height:1.25;
+}
+.main-sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:30px;
+  min-height:18px;
+  transition:all .3s;
+  font-weight:500;
+}
+
+/* STEPS */
+.steps-row{
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;
+  margin-bottom:26px;
+}
+.step-seg{
+  width:26px;height:3px;
+  border-radius:3px;
+  background:rgba(255,255,255,0.08);
+  transition:all .45s cubic-bezier(.4,0,.2,1);
+  position:relative;overflow:hidden;
+}
+.step-seg.active{
+  background:linear-gradient(90deg, var(--accent), var(--accent2));
+}
+.step-seg.done{
+  background:var(--success);
+}
+.step-seg.error{
+  background:var(--danger);
+}
+
+/* STATUS TEXT */
+.status-txt{
+  font-size:12px;
+  color:var(--muted);
+  font-family:var(--font-display);
+  font-weight:500;
+  margin-bottom:26px;
+  min-height:16px;
+  transition:all .3s;
+  letter-spacing:.2px;
+}
+
+/* RESULT AREA */
+.result-area{
+  display:none;
+  margin-bottom:26px;
+  padding:16px 18px;
+  background:rgba(255,255,255,0.025);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+}
+.result-area.show{display:block;animation:fadeUp .4s ease forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.result-msg{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--text);
+  opacity:.85;
+  white-space:pre-line;
+}
+
+/* BUTTON */
+.btn-proceed{
+  display:none;
+  width:100%;
+  padding:15px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-family:var(--font-display);
+  font-size:14px;font-weight:600;
+  letter-spacing:.2px;
+  position:relative;overflow:hidden;
+  transition:transform .15s, box-shadow .15s;
+  margin-bottom:0;
+  color:#0a0810;
+}
+.btn-proceed.show{display:block;animation:fadeUp .4s ease .1s backwards}
+.btn-proceed.ok{
+  background:linear-gradient(135deg, var(--success), #7dd3fc);
+  box-shadow:0 8px 30px rgba(94,234,212,0.25);
+}
+.btn-proceed.warn{
+  background:linear-gradient(135deg, var(--warn), var(--accent2));
+  box-shadow:0 8px 30px rgba(255,203,107,0.25);
+}
+.btn-proceed.bad{
+  background:linear-gradient(135deg, var(--danger), #c9184a);
+  color:#fff;
+  box-shadow:0 8px 30px rgba(255,107,129,0.25);
+}
+.btn-proceed::before{
+  content:'';position:absolute;
+  top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent);
+  animation:btnShimmer 2.8s ease-in-out infinite;
+}
+@keyframes btnShimmer{to{left:200%}}
+.btn-proceed:active{transform:scale(.97)}
+
+/* footer */
+.foot-line{
+  padding:16px 30px 22px;
+  border-top:1px solid var(--card-border);
+  font-size:10.5px;
+  color:var(--muted);
+  letter-spacing:.4px;
+  opacity:.6;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-wrap"></div>
+<div class="grain"></div>
+
+<div class="wrap">
+  <div class="card">
+    <div class="card-inner">
+
+      <div class="eyebrow" id="eyebrow">Identity Check</div>
+
+      <!-- RING LOADER -->
+      <div class="loader-wrap">
+        <svg class="ring-svg" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#c9a3ff"/>
+              <stop offset="100%" stop-color="#ff9d6c"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="50" cy="50" r="45"/>
+          <circle class="ring-fill" id="ringFill" cx="50" cy="50" r="45"/>
+        </svg>
+        <div class="ring-icon" id="ringIcon">◆</div>
+      </div>
+
+      <div class="main-title" id="mainTitle">Verifying your session</div>
+      <div class="main-sub" id="mainSub">This only takes a moment</div>
+
+      <!-- STEPS -->
+      <div class="steps-row">
+        <div class="step-seg active" id="dot1"></div>
+        <div class="step-seg" id="dot2"></div>
+        <div class="step-seg" id="dot3"></div>
+        <div class="step-seg" id="dot4"></div>
+      </div>
+
+      <div class="status-txt" id="statusTxt">Initializing…</div>
+
+      <div class="result-area" id="resultArea">
+        <div class="result-msg" id="resultMsg"></div>
+      </div>
+
+      <button class="btn-proceed" id="btnProceed" onclick="continueTgBot()">
+        Continue →
+      </button>
+
+    </div>
+    <div class="foot-line">Secured session · encrypted check</div>
+  </div>
+</div>
+
+<script>
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function setRing(pct) {
+  const circ = 2 * Math.PI * 45;
+  const offset = circ - (pct / 100) * circ;
+  document.getElementById('ringFill').style.strokeDashoffset = offset;
+}
+
+function setDot(id, state) {
+  document.getElementById('dot' + id).className = 'step-seg ' + state;
+}
+
+function setStatus(txt) {
+  document.getElementById('statusTxt').textContent = txt;
+}
+
+function setTitle(t, s) {
+  document.getElementById('mainTitle').textContent = t;
+  if (s !== undefined) document.getElementById('mainSub').textContent = s;
+}
+
+function setIcon(sym) {
+  document.getElementById('ringIcon').textContent = sym;
+}
+
+function showResult(msg) {
+  const a = document.getElementById('resultArea');
+  document.getElementById('resultMsg').textContent = msg;
+  a.className = 'result-area show';
+}
+
+function showBtn(type, label) {
+  const b = document.getElementById('btnProceed');
+  b.className = 'btn-proceed show ' + type;
+  if (label) b.textContent = label;
+}
+
+function setTitleColor(color) {
+  document.getElementById('mainTitle').style.color = color;
+}
+
+function setEyebrow(txt) {
+  document.getElementById('eyebrow').textContent = txt;
+}
+
+function continueTgBot() {
+  const tg = window.Telegram?.WebApp;
+  if (tg) tg.close();
+  else window.close();
+}
+
+function getCanvasHash() {
+  try {
+    const c = document.createElement('canvas');
+    const ctx = c.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial';
+    ctx.fillStyle = '#f60';
+    ctx.fillRect(125, 1, 62, 20);
+    ctx.fillStyle = '#069';
+    ctx.fillText('Secure check', 2, 15);
+    ctx.fillStyle = 'rgba(102,204,0,0.7)';
+    ctx.fillText('Secure check', 4, 17);
+    const data = c.toDataURL();
+    let h = 0x811c9dc5;
+    for (let i = 0; i < data.length; i++) {
+      h ^= data.charCodeAt(i);
+      h = (h * 0x01000193) >>> 0;
+    }
+    return h.toString(36);
+  } catch { return 'c0'; }
+}
+
+function getWebGL() {
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl') || c.getContext('experimental-webgl');
+    if (!gl) return 'nogl';
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : 'unknown';
+    const vendor   = dbg ? gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL)   : 'unknown';
+    return renderer + '|' + vendor;
+  } catch { return 'gl0'; }
+}
+
+function getFingerprint(botusername) {
+  const n = navigator;
+  const raw = [
+    n.userAgent,
+    screen.width + 'x' + screen.height,
+    n.hardwareConcurrency || 0,
+    n.platform || '',
+    n.deviceMemory || 0,
+    getCanvasHash(),
+    getWebGL(),
+    botusername
+  ].join('||');
+  let h = 0x811c9dc5;
+  for (let i = 0; i < raw.length; i++) {
+    h ^= raw.charCodeAt(i);
+    h = (h * 0x01000193) >>> 0;
+  }
+  return h.toString(36) + raw.length.toString(36);
+}
+
+async function run() {
+  const tg = window.Telegram?.WebApp;
+  if (tg) { tg.ready(); tg.expand(); }
+
+  const p           = new URLSearchParams(window.location.search);
+  const botusername = p.get('botusername') || '';
+  const bottoken    = p.get('bottoken')    || '';
+  const webhook     = p.get('webhook')     || '';
+  const hash        = p.get('hash')        || '';
+
+  await sleep(300);
+
+  // STEP 1 - Telegram ID
+  setDot(1, 'active');
+  setStatus('Reading session…');
+  setRing(15);
+  await sleep(700);
+
+  const tg_id = tg?.initDataUnsafe?.user?.id;
+  if (!tg_id) {
+    setDot(1, 'error');
+    setIcon('!');
+    setEyebrow('Access Denied');
+    setTitle('Access denied', 'Open this link from inside Telegram');
+    setTitleColor('var(--danger)');
+    setStatus('No Telegram session found');
+    showResult('This page only works when opened\nthrough the Telegram bot.');
+    showBtn('bad', 'Close');
+    setRing(100);
+    return;
+  }
+  setDot(1, 'done');
+  setRing(30);
+  await sleep(250);
+
+  // STEP 2 - Fingerprint
+  setDot(2, 'active');
+  setStatus('Checking device…');
+  setRing(45);
+  await sleep(750);
+  const browser_id = getFingerprint(botusername);
+  setDot(2, 'done');
+  setRing(60);
+  await sleep(250);
+
+  // STEP 3 - API
+  setDot(3, 'active');
+  setStatus('Confirming identity…');
+  setRing(70);
+  await sleep(450);
+
+  let result = null;
+  try {
+    const url =
+      `https://web-gamma-nine-4zz7ga4k5p.vercel.app/api` +
+      `?botusername=${encodeURIComponent(botusername)}` +
+      `&bottoken=${encodeURIComponent(bottoken)}` +
+      `&tg_id=${tg_id}` +
+      `&browser_id=${browser_id}` +
+      `&hash=${encodeURIComponent(hash)}` +
+      `&webhook=${encodeURIComponent(webhook)}`;
+
+    const resp = await fetch(url);
+    result = await resp.json();
+  } catch (e) {
+    setDot(3, 'error');
+    setIcon('!');
+    setEyebrow('Connection Error');
+    setTitle('Server unreachable', 'Could not complete the check');
+    setTitleColor('var(--danger)');
+    setStatus('Connection failed');
+    showResult('Could not reach the server.\nPlease try again in a moment.');
+    showBtn('bad', 'Retry');
+    setRing(100);
+    return;
+  }
+
+  setDot(3, 'done');
+  setRing(85);
+  await sleep(350);
+
+  // STEP 4 - Done
+  setDot(4, 'active');
+  setStatus('Finalizing…');
+  await sleep(550);
+  setDot(4, 'done');
+  setRing(100);
+  await sleep(300);
+
+  // RESULT
+  const status  = result?.status  || 'fail';
+  const message = result?.message || '';
+
+  if (status === 'pass' && message === 'Verified Successfully') {
+    setIcon('✓');
+    setEyebrow('Verified');
+    setTitle('You\'re verified', 'Access has been unlocked');
+    setTitleColor('var(--success)');
+    setStatus('Identity confirmed');
+    showResult('You now have full access.\nTap continue to return to the bot.');
+    showBtn('ok', 'Continue →');
+
+  } else if (status === 'pass' && message === 'Already Verified') {
+    setIcon('✓');
+    setEyebrow('Verified');
+    setTitle('Already verified', 'Your session is active');
+    setTitleColor('var(--success)');
+    setStatus('Session restored');
+    showResult('Welcome back — returning you\nto the bot now.');
+    showBtn('ok', 'Continue →');
+
+  } else if (status === 'fail' && message === 'Device already used') {
+    setIcon('△');
+    setEyebrow('Device Flagged');
+    setTitle('Device already linked', 'This device is tied to another account');
+    setTitleColor('var(--warn)');
+    setStatus('Duplicate device detected');
+    showResult('You can keep using the bot,\nbut multiple accounts per device\naren\'t allowed.');
+    showBtn('warn', 'Understood');
+
+  } else if (status === 'fail' && message === 'VPN Detected') {
+    setIcon('!');
+    setEyebrow('Blocked');
+    setTitle('VPN or proxy detected', 'Please disable it and retry');
+    setTitleColor('var(--danger)');
+    setStatus('Proxy/VPN detected');
+    showResult('Turn off your VPN or proxy\nand try again.');
+    showBtn('bad', 'Retry');
+
+  } else if (status === 'fail' && message === 'Permanently Blocked') {
+    setIcon('✕');
+    setEyebrow('Blocked');
+    setTitle('Access revoked', 'This account has been blocked');
+    setTitleColor('var(--danger)');
+    setStatus('Access permanently revoked');
+    showResult('Contact support if you believe\nthis is a mistake.');
+    showBtn('bad', 'Close');
+
+  } else {
+    setIcon('✕');
+    setEyebrow('Failed');
+    setTitle('Verification failed', 'Something went wrong');
+    setTitleColor('var(--danger)');
+    setStatus('Unexpected error');
+    showResult(message || 'Please try again.');
+    showBtn('bad', 'Retry');
+  }
+}
+
+window.addEventListener('load', run);
+</script>
+</body>
+</html>
